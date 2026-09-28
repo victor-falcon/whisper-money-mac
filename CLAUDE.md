@@ -54,3 +54,4 @@ widget; en modo tintado el exceso se lee por opacidad.
 
 Pendiente de Diego: el `current` de `get_net_worth` no coincide con la suma de cuentas
 (préstamos y tarjetas como deuda). Patrimonio muestra la cifra de Wispr y, debajo, la suma propia.
+Seguimiento en el issue #2. Repo: github.com/Chere3/wispr-money-mac.
