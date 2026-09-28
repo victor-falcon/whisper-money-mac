@@ -1,0 +1,22 @@
+name: Proponer una mejora
+description: Una idea para la app o el widget.
+labels: ["mejora"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué problema resuelve
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Propuesta
+      description: Cómo lo imaginas. Mockups o bocetos son bienvenidos (sin datos reales).
+    validations:
+      required: true
+  - type: textarea
+    id: mcp
+    attributes:
+      label: Herramientas MCP involucradas
+      description: Si la sabes, qué herramienta de Wispr (`list_budgets`, `get_cashflow`…) da los datos.

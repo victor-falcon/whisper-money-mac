@@ -37,6 +37,7 @@ private struct WidgetFrame: View {
         WidgetFrame(family: .systemLarge, entry: live)
     }
     .padding(24)
-    .background(LinearGradient(colors: [.indigo, .teal], startPoint: .topLeading, endPoint: .bottomTrailing))
+    .background(LinearGradient(colors: [Color(red: 0.16, green: 0.12, blue: 0.30), Color(red: 0.04, green: 0.18, blue: 0.24)],
+                               startPoint: .topLeading, endPoint: .bottomTrailing))
 }
 #endif

@@ -1,0 +1,39 @@
+name: Reportar un error
+description: Algo no funciona como debería.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **No pegues montos, nombres de cuentas ni capturas con datos financieros reales.** Si una
+        captura ayuda, tápalos o reprodúcelo con los datos de preview.
+  - type: textarea
+    id: que-paso
+    attributes:
+      label: Qué pasó
+      description: Qué esperabas y qué viste. Incluye el texto exacto del error si lo hay.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Cómo reproducirlo
+      placeholder: |
+        1. Abrir Patrimonio
+        2. …
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Dónde
+      options: [Presupuestos, Cuentas, Movimientos, Flujo, Patrimonio, Widget, Conexión / configuración, Otro]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versión de macOS
+      placeholder: "26.5.1"
+    validations:
+      required: true
