@@ -9,6 +9,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "WisprKit"),
+        .executableTarget(name: "wispr-probe", dependencies: ["WisprKit"]),
         .testTarget(name: "WisprKitTests", dependencies: ["WisprKit"]),
     ]
 )
