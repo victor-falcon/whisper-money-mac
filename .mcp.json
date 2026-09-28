@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "xcode": {
+      "type": "stdio",
+      "command": "xcrun",
+      "args": [
+        "mcpbridge"
+      ],
+      "env": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      }
+    },
+    "peekaboo": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@steipete/peekaboo",
+        "mcp"
+      ],
+      "env": {}
+    },
+    "sosumi": {
+      "type": "http",
+      "url": "https://sosumi.ai/mcp"
+    }
+  }
+}
