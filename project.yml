@@ -5,7 +5,7 @@ name: WisprMac
 options:
   bundleIdPrefix: mx.diego
   deploymentTarget:
-    macOS: "14.0"
+    macOS: "26.0"
   createIntermediateGroups: true
 
 configFiles:

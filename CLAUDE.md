@@ -28,6 +28,10 @@ pkill -x WisprMoney; ditto .build/xcode/Build/Products/Debug/WisprMoney.app /App
 ./scripts/test.sh                      # tests de WisprKit
 ```
 
+Tras reinstalar, el escritorio sigue mostrando la extensión vieja del widget (WidgetKit la cachea si
+no cambia la versión): `pkill -f BudgetsWidget.appex; killall chronod` y vuelve a abrir la app.
+macOS no previsualiza widgets; la galería `App/Views/WidgetPreviews.swift` los dibuja desde la app.
+
 Team ID en `Config/Team.local.xcconfig` (ignorado por git). Instalar en `/Applications` es lo que
 hace que macOS registre el widget.
 
@@ -41,16 +45,12 @@ hace que macOS registre el widget.
 Skills a usar para UI: `swiftui-expert-skill` (AvdLee), `swiftui-pro`, `swiftui-liquid-glass`,
 `macos-design-guidelines`.
 
-## Siguiente trabajo: rediseño (pedido 28-sep-2026)
+## Rediseño (28-sep-2026): hecho
 
-Diego calificó la UI de la app y del widget como "horrible". Plan acordado:
+Target macOS 26. Cada pantalla es `XView` (carga en `LiveView`) + `XContent` pura con `#Preview` y
+datos sintéticos de `Shared/PreviewData.swift`. Tarjetas de material (`App/Views/Surface.swift`);
+el vidrio queda para sidebar y toolbar. Anillos en `Shared/BudgetStyle.swift`, compartidos con el
+widget; en modo tintado el exceso se lee por opacidad.
 
-1. Estética macOS 26 Tahoe: sidebar translúcida, toolbar con Liquid Glass, tipografía con
-   jerarquía, tarjetas con materiales en vez de cajas grises.
-2. Patrimonio: área apilada activos vs deudas (préstamos y tarjetas como deuda, hacia abajo) en vez
-   de 12 líneas encimadas; hoy hay mucho espacio muerto y la leyenda es diminuta.
-3. Presupuestos: anillos de progreso tipo Actividad + resumen del mes.
-4. Widget: soportar modos vidrio/tintado (`widgetAccentable`, `widgetRenderingMode`,
-   `containerBackground`), anillos grandes y total del mes.
-5. Verificar con capturas antes/después de cada pantalla y del widget (Peekaboo o RenderPreview);
-   no pedirle a Diego que diga si se ve bien.
+Pendiente de Diego: el `current` de `get_net_worth` no coincide con la suma de cuentas
+(préstamos y tarjetas como deuda). Patrimonio muestra la cifra de Wispr y, debajo, la suma propia.

@@ -84,6 +84,17 @@ let budgetsJSON = """
     #expect(Money.format(123456, currency: "MXN").contains("1,234.56"))
 }
 
+@Test func parsesWisprDatesAndMonthLabels() {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "America/Mexico_City")!
+    let day = WisprDate.date("2026-09-15", calendar: calendar)
+    #expect(day.map { calendar.dateComponents([.year, .month, .day], from: $0) } == DateComponents(year: 2026, month: 9, day: 15))
+    let month = WisprDate.date("2025-10", calendar: calendar)
+    #expect(month.map { calendar.dateComponents([.year, .month, .day], from: $0) } == DateComponents(year: 2025, month: 10, day: 1))
+    #expect(WisprDate.date("", calendar: calendar) == nil)
+    #expect(WisprDate.date("octubre", calendar: calendar) == nil)
+}
+
 @Test func parsesSSEPickingMatchingID() throws {
     let sse = "event: message\r\ndata: {\"jsonrpc\":\"2.0\",\"method\":\"notifications/progress\"}\r\n\r\n" +
         "event: message\r\ndata: {\"jsonrpc\":\"2.0\",\"id\":7,\"result\":{\"ok\":true}}\r\n\r\n"

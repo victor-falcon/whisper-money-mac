@@ -77,4 +77,13 @@ public enum WisprDate {
         let start = startOfMonth(date, calendar: calendar)
         return calendar.date(byAdding: DateComponents(month: 1, day: -1), to: start) ?? date
     }
+
+    /// Lee `YYYY-MM-DD` o `YYYY-MM` (etiquetas mensuales de `get_net_worth`). `nil` si no encaja.
+    public static func date(_ string: String, calendar: Calendar = .current) -> Date? {
+        let parts = string.split(separator: "-").map { Int($0) }
+        guard (2...3).contains(parts.count), let year = parts[0], let month = parts[1] else { return nil }
+        let day = parts.count == 3 ? parts[2] : 1
+        guard let day else { return nil }
+        return calendar.date(from: DateComponents(year: year, month: month, day: day))
+    }
 }

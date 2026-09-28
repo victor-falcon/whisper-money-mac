@@ -31,27 +31,19 @@ struct LiveView<Value, Content: View>: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .safeAreaInset(edge: .bottom) {
-            HStack(spacing: 6) {
-                Circle().fill(error == nil ? Color.green : Color.red).frame(width: 7, height: 7)
-                if let fetchedAt {
-                    Text("En vivo · consultado a las \(fetchedAt.formatted(date: .omitted, time: .standard))")
-                } else {
-                    Text("Consultando…")
-                }
-                Spacer()
-                if loading { ProgressView().controlSize(.mini) }
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(.bar)
-        }
+        // La hora de la última consulta vive en el subtítulo de la ventana, bajo el título.
+        .navigationSubtitle(status)
         .toolbar {
             ToolbarItem {
-                Button { manualTick += 1 } label: { Label("Actualizar", systemImage: "arrow.clockwise") }
-                    .keyboardShortcut("r", modifiers: .command)
+                Button { manualTick += 1 } label: {
+                    if loading {
+                        ProgressView().controlSize(.small)
+                    } else {
+                        Label("Actualizar", systemImage: "arrow.clockwise")
+                    }
+                }
+                .help("Consultar a Wispr de nuevo (⌘R)")
+                .keyboardShortcut("r", modifiers: .command)
             }
         }
         .task(id: TaskKey(key: key, tick: manualTick)) {
@@ -60,6 +52,12 @@ struct LiveView<Value, Content: View>: View {
                 try? await Task.sleep(for: interval)
             }
         }
+    }
+
+    private var status: String {
+        if error != nil { return "Sin conexión" }
+        guard let fetchedAt else { return "Consultando…" }
+        return "En vivo · \(fetchedAt.formatted(date: .omitted, time: .standard))"
     }
 
     private func fetch() async {

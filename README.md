@@ -7,7 +7,7 @@ con token Bearer), el mismo que usa Claude Code.
 ## Principio: nada pre-cacheado
 
 - Cada pantalla consulta al servidor al abrirse, cada 60 s mientras está visible y con ⌘R.
-  La barra inferior dice a qué hora fue la última consulta.
+  El subtítulo de la ventana dice a qué hora fue la última consulta.
 - Sesión HTTP efímera, sin `URLCache`, con `reloadIgnoringLocalAndRemoteCacheData`.
 - Si una consulta falla, se muestra el error; nunca los números de la consulta anterior.
 - Lo único que se guarda en la Mac es el endpoint y el token, en el Llavero.
