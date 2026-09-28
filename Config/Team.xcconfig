@@ -1,0 +1,4 @@
+// Valor por defecto: vacío. Pon tu Team ID en Team.local.xcconfig (ignorado por git):
+//   WISPR_TEAM_ID = ABCDE12345
+WISPR_TEAM_ID =
+#include? "Team.local.xcconfig"

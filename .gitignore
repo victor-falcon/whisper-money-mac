@@ -1,0 +1,12 @@
+.DS_Store
+.build/
+*.xcodeproj/
+DerivedData/
+xcuserdata/
+.swiftpm/
+# Generados por xcodegen desde project.yml
+App/Info.plist
+App/WisprMac.entitlements
+Widget/Info.plist
+Widget/BudgetsWidget.entitlements
+Config/Team.local.xcconfig
