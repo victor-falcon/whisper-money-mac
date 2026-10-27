@@ -1,6 +1,6 @@
 import SwiftUI
 import WidgetKit
-import WisprKit
+import WhisperKit
 
 /// Widget de presupuestos. Cada actualización consulta `list_budgets` en vivo; no guarda montos.
 /// Si la consulta falla muestra "Sin conexión" en lugar de números viejos.
@@ -31,7 +31,7 @@ struct BudgetsProvider: TimelineProvider {
             guard let credentials = try CredentialStore.fromBundle().load() else {
                 return BudgetsEntry(date: .now, state: .notConfigured)
             }
-            let budgets = try await WisprService(credentials: credentials).budgets()
+            let budgets = try await WhisperService(credentials: credentials).budgets()
             return BudgetsEntry(date: .now, state: .live(budgets))
         } catch {
             return BudgetsEntry(date: .now, state: .failed(error.localizedDescription))
@@ -42,11 +42,11 @@ struct BudgetsProvider: TimelineProvider {
 @main
 struct BudgetsWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "mx.diego.wisprmac.budgets", provider: BudgetsProvider()) { entry in
+        StaticConfiguration(kind: "mx.diego.whispermac.budgets", provider: BudgetsProvider()) { entry in
             BudgetsWidgetView(entry: entry)
         }
         .configurationDisplayName("Presupuestos")
-        .description("Porcentaje gastado de cada presupuesto, consultado en vivo a Wispr Money.")
+        .description("Porcentaje gastado de cada presupuesto, consultado en vivo a Whisper Money.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

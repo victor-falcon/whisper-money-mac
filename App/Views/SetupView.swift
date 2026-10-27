@@ -6,7 +6,7 @@ struct SetupView: View {
             Image(systemName: "dollarsign.circle")
                 .font(.system(size: 48))
                 .foregroundStyle(.tint)
-            Text("Conectar con Wispr Money")
+            Text("Conectar con Whisper Money")
                 .font(.title2.bold())
             Text("La app consulta tu servidor en vivo por MCP. El token se guarda en el Llavero de macOS; ningún dato financiero se guarda en la Mac.")
                 .multilineTextAlignment(.center)

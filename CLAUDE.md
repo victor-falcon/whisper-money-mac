@@ -1,18 +1,18 @@
-# CLAUDE.md — Wispr Money para Mac
+# CLAUDE.md — Whisper Money para Mac
 
-App nativa de macOS (SwiftUI, sin vistas web) + widget WidgetKit para Wispr Money self-hosted.
+App nativa de macOS (SwiftUI, sin vistas web) + widget WidgetKit para Whisper Money self-hosted.
 Arquitectura, pantallas y principio "nada pre-cacheado" en `README.md`. Idioma: español.
 
 ## Reglas no negociables
 
-- **Conexión directa, sin caché:** toda cifra viene de una llamada en vivo al MCP de Wispr
-  (`WisprKit/MCPClient`). Nada de persistir montos (ni UserDefaults, ni app group, ni archivos).
+- **Conexión directa, sin caché:** toda cifra viene de una llamada en vivo al MCP de Whisper Money
+  (`WhisperKit/MCPClient`). Nada de persistir montos (ni UserDefaults, ni app group, ni archivos).
   Si una consulta falla se muestra el error, nunca valores anteriores.
 - El widget refresca ~cada 15 min pidiendo en vivo, muestra la hora de consulta y "Sin conexión"
   si falla (acordado con Diego).
 - Datos financieros reales: no van a commits, tests, fixtures, capturas en el repo ni reportes.
   Los tests usan fixtures sintéticos. Capturas de pantalla solo al scratchpad.
-- El token vive en el Llavero (grupo `7QQ3Y399CF.mx.diego.wisprmac.shared`); nunca se imprime.
+- El token vive en el Llavero (grupo `<TeamID>.mx.diego.whispermac.shared`); nunca se imprime.
 - Montos en unidades menores (`Money`); la moneda sale de la respuesta, no se hardcodea.
 
 ## Compilar, instalar, probar
@@ -23,9 +23,9 @@ Arquitectura, pantallas y principio "nada pre-cacheado" en `README.md`. Idioma: 
 ```sh
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 xcodegen generate
-xcodebuild -project WisprMac.xcodeproj -scheme WisprMac -derivedDataPath .build/xcode -allowProvisioningUpdates build
-pkill -x WisprMoney; ditto .build/xcode/Build/Products/Debug/WisprMoney.app /Applications/WisprMoney.app && open /Applications/WisprMoney.app
-./scripts/test.sh                      # tests de WisprKit
+xcodebuild -project WhisperMac.xcodeproj -scheme WhisperMac -derivedDataPath .build/xcode -allowProvisioningUpdates build
+pkill -x WhisperMoney; ditto .build/xcode/Build/Products/Debug/WhisperMoney.app /Applications/WhisperMoney.app && open /Applications/WhisperMoney.app
+./scripts/test.sh                      # tests de WhisperKit
 ```
 
 Tras reinstalar, el escritorio sigue mostrando la extensión vieja del widget (WidgetKit la cachea si
@@ -53,5 +53,5 @@ el vidrio queda para sidebar y toolbar. Anillos en `Shared/BudgetStyle.swift`, c
 widget; en modo tintado el exceso se lee por opacidad.
 
 Pendiente de Diego: el `current` de `get_net_worth` no coincide con la suma de cuentas
-(préstamos y tarjetas como deuda). Patrimonio muestra la cifra de Wispr y, debajo, la suma propia.
-Seguimiento en el issue #2. Repo: github.com/Chere3/wispr-money-mac.
+(préstamos y tarjetas como deuda). Patrimonio muestra la cifra de Whisper Money y, debajo, la suma propia.
+Seguimiento en el issue #2. Repo: github.com/Chere3/whisper-money-mac.

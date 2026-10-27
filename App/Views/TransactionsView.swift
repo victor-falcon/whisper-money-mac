@@ -1,11 +1,11 @@
 import SwiftUI
 import WidgetKit
-import WisprKit
+import WhisperKit
 
 struct TransactionsView: View {
-    let service: WisprService
+    let service: WhisperService
 
-    @State private var month = WisprDate.startOfMonth(.now)
+    @State private var month = WhisperDate.startOfMonth(.now)
     @State private var search = ""
     @State private var debounced = ""
     @State private var accountID: String?
@@ -17,8 +17,8 @@ struct TransactionsView: View {
         var f = TransactionFilter()
         f.query = debounced
         f.accountID = accountID
-        f.from = WisprDate.string(WisprDate.startOfMonth(month))
-        f.to = WisprDate.string(WisprDate.endOfMonth(month))
+        f.from = WhisperDate.string(WhisperDate.startOfMonth(month))
+        f.to = WhisperDate.string(WhisperDate.endOfMonth(month))
         f.limit = 200
         return f
     }
@@ -97,7 +97,7 @@ struct TransactionsView: View {
 }
 
 struct NewTransactionView: View {
-    let service: WisprService
+    let service: WhisperService
     let accounts: [Account]
     let onSaved: () -> Void
 
@@ -109,7 +109,7 @@ struct NewTransactionView: View {
     @State private var date = Date.now
     @State private var categoryID: String?
     @State private var notes = ""
-    @State private var categories: [WisprKit.Category] = []
+    @State private var categories: [WhisperKit.Category] = []
     @State private var saving = false
     @State private var error: String?
 
@@ -135,7 +135,7 @@ struct NewTransactionView: View {
                 ForEach(categories.filter { $0.id != nil }, id: \.id) { Text($0.name).tag($0.id) }
             }
             TextField("Notas", text: $notes, axis: .vertical)
-            Text("Wispr no deduplica: registra aquí solo lo que el banco no va a sincronizar.")
+            Text("Whisper Money no deduplica: registra aquí solo lo que el banco no va a sincronizar.")
                 .font(.caption).foregroundStyle(.secondary)
             if let error { Text(error).foregroundStyle(.red) }
         }
@@ -160,7 +160,7 @@ struct NewTransactionView: View {
         defer { saving = false }
         let minor = Money.minor(fromMajor: amount, currency: currency)
         let new = NewTransaction(accountID: accountID, description: description,
-                                 amount: isExpense ? -minor : minor, date: WisprDate.string(date),
+                                 amount: isExpense ? -minor : minor, date: WhisperDate.string(date),
                                  categoryID: categoryID, notes: notes)
         do {
             try await service.createTransaction(new)

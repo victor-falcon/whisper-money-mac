@@ -14,8 +14,8 @@ public struct Credentials: Codable, Sendable, Equatable {
 /// URL del endpoint MCP y token en el Llavero de macOS. Es lo único que se persiste: credenciales,
 /// nunca datos financieros. Con `accessGroup`, la app y el widget comparten el mismo elemento.
 public struct CredentialStore: Sendable {
-    public static let service = "mx.diego.wisprmac"
-    private static let account = "wispr-money-mcp"
+    public static let service = "mx.diego.whispermac"
+    private static let account = "whisper-money-mcp"
 
     private let accessGroup: String?
 

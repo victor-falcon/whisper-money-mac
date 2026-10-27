@@ -1,6 +1,6 @@
 # Contribuir
 
-¡Gracias por querer mejorar Wispr Money para Mac! Issues y PRs en español o inglés.
+¡Gracias por querer mejorar Whisper Money para Mac! Issues y PRs en español o inglés.
 
 ## Reglas no negociables
 
@@ -17,7 +17,7 @@
 ```sh
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 xcodegen generate
-xcodebuild -project WisprMac.xcodeproj -scheme WisprMac build
+xcodebuild -project WhisperMac.xcodeproj -scheme WhisperMac build
 ./scripts/test.sh
 ```
 

@@ -1,8 +1,8 @@
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 struct BudgetsView: View {
-    let service: WisprService
+    let service: WhisperService
 
     var body: some View {
         LiveView(load: { try await service.budgets() }) { response in
@@ -17,7 +17,7 @@ struct BudgetsContent: View {
     var body: some View {
         if response.budgets.isEmpty {
             ContentUnavailableView("Sin presupuestos", systemImage: "chart.pie",
-                                   description: Text("Créalos en Wispr Money."))
+                                   description: Text("Créalos en Whisper Money."))
         } else {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -122,7 +122,7 @@ private struct BudgetCard: View {
                         .foregroundStyle(.secondary)
                 }
                 if period.processingHistorical {
-                    Label("Wispr sigue asignando movimientos; el gasto puede cambiar.", systemImage: "hourglass")
+                    Label("Whisper Money sigue asignando movimientos; el gasto puede cambiar.", systemImage: "hourglass")
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }

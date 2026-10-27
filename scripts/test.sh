@@ -1,8 +1,8 @@
 #!/bin/sh
-# Tests de WisprKit. Con Xcode instalado basta `swift test`; con solo Command Line Tools hay que
+# Tests de WhisperKit. Con Xcode instalado basta `swift test`; con solo Command Line Tools hay que
 # apuntar a Swift Testing a mano y desactivar el overlay _Testing_Foundation (no viene en las CLT).
 set -e
-cd "$(dirname "$0")/../WisprKit"
+cd "$(dirname "$0")/../WhisperKit"
 
 if xcodebuild -version >/dev/null 2>&1; then
     exec swift test "$@"

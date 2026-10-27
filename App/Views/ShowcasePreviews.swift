@@ -1,6 +1,6 @@
 #if DEBUG
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 // La app completa (barra lateral + pantalla) con datos sintéticos, para las capturas del README
 // (`docs/screenshots/`). Nunca uses datos reales aquí.
@@ -26,7 +26,7 @@ private struct Showcase<Content: View>: View {
     }
 }
 
-private let demoService = WisprService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!,
+private let demoService = WhisperService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!,
                                                                 token: "preview"))
 
 #Preview("Presupuestos") {
@@ -42,7 +42,7 @@ private let demoService = WisprService(credentials: Credentials(endpoint: URL(st
 #Preview("Flujo") {
     Showcase(section: .flujo) {
         CashflowContent(snapshot: .init(month: PreviewData.cashflow, trend: PreviewData.cashflow.trend.data, currency: "MXN"),
-                        month: WisprDate.date("2026-09-01")!, service: demoService)
+                        month: WhisperDate.date("2026-09-01")!, service: demoService)
     }
 }
 

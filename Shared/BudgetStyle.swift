@@ -1,6 +1,6 @@
 import SwiftUI
 import WidgetKit
-import WisprKit
+import WhisperKit
 
 // Componentes compartidos por la app y el widget.
 
@@ -83,7 +83,7 @@ struct BudgetSummary {
         available = periods.reduce(0) { $0 + $1.available }
         overCount = periods.filter(\.isOver).count
         activeCount = periods.count
-        endsOn = periods.compactMap { WisprDate.date($0.endDate) }.min()
+        endsOn = periods.compactMap { WhisperDate.date($0.endDate) }.min()
     }
 
     var fraction: Double? { available > 0 ? Double(spent) / Double(available) : nil }
@@ -116,7 +116,7 @@ extension BudgetPeriod {
 
     /// "1 – 30 sep", o las fechas crudas si no se pueden leer.
     var rangeText: String {
-        guard let start = WisprDate.date(startDate), let end = WisprDate.date(endDate) else {
+        guard let start = WhisperDate.date(startDate), let end = WhisperDate.date(endDate) else {
             return "\(startDate) → \(endDate)"
         }
         return (start..<end).formatted(.interval.day().month(.abbreviated))

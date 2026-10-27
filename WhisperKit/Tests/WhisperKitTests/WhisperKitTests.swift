@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import WisprKit
+@testable import WhisperKit
 
 // Fixtures sintéticos con la misma forma que las respuestas reales del MCP (montos inventados).
 
@@ -20,7 +20,7 @@ let budgetsJSON = """
 """
 
 @Test func decodesBudgetsAndComputesPercent() throws {
-    let r = try WisprDecoder.decode(BudgetsResponse.self, from: Data(budgetsJSON.utf8))
+    let r = try WhisperDecoder.decode(BudgetsResponse.self, from: Data(budgetsJSON.utf8))
     #expect(r.currency == "MXN")
     #expect(r.budgets.count == 3)
     let food = try #require(r.budgets[0].currentPeriod)
@@ -41,7 +41,7 @@ let budgetsJSON = """
        {"month":"2026-02","timestamp":200,"acc-a":1200}
      ],"accounts":{}},"currency_code":"MXN"}
     """
-    let r = try WisprDecoder.decode(NetWorthResponse.self, from: Data(json.utf8))
+    let r = try WhisperDecoder.decode(NetWorthResponse.self, from: Data(json.utf8))
     #expect(r.current.current == -5000)
     #expect(r.evolution.data[0].label == "2026-01")
     #expect(r.latestBalances == ["acc-a": 1200, "acc-b": -300])
@@ -53,7 +53,7 @@ let budgetsJSON = """
      "currency":"MXN","category_id":null,"category":null,"category_source":null,"account_id":"a1","account":"Débito",
      "source":"manually_created","creditor_name":null,"debtor_name":null,"split_parent_id":null,"labels":[]}]}
     """
-    let t = try WisprDecoder.decode(TransactionsResponse.self, from: Data(tx.utf8))
+    let t = try WhisperDecoder.decode(TransactionsResponse.self, from: Data(tx.utf8))
     #expect(t.transactions[0].amount == -4500)
     #expect(t.transactions[0].category == nil)
 
@@ -61,7 +61,7 @@ let budgetsJSON = """
     {"space_id":"s","accounts":[{"id":"a1","name":"Tarjeta","type":"credit_card","currency":"MXN","bank":"X",
      "is_connected":false,"ownership_percentage":100}]}
     """
-    let a = try WisprDecoder.decode(AccountsResponse.self, from: Data(acc.utf8))
+    let a = try WhisperDecoder.decode(AccountsResponse.self, from: Data(acc.utf8))
     #expect(a.accounts[0].isLiability)
 
     let cf = """
@@ -72,7 +72,7 @@ let budgetsJSON = """
        "expense_categories":[],"total_income":100,"total_expense":50},
      "trend":{"data":[{"month":"2026-01","income":100,"expense":50,"net":50}]}}
     """
-    let c = try WisprDecoder.decode(CashflowResponse.self, from: Data(cf.utf8))
+    let c = try WhisperDecoder.decode(CashflowResponse.self, from: Data(cf.utf8))
     #expect(c.summary.previous.savingsRate == nil)
     #expect(c.sankey.incomeCategories[0].category.id == nil)
 }
@@ -84,15 +84,15 @@ let budgetsJSON = """
     #expect(Money.format(123456, currency: "MXN").contains("1,234.56"))
 }
 
-@Test func parsesWisprDatesAndMonthLabels() {
+@Test func parsesWhisperDatesAndMonthLabels() {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = TimeZone(identifier: "America/Mexico_City")!
-    let day = WisprDate.date("2026-09-15", calendar: calendar)
+    let day = WhisperDate.date("2026-09-15", calendar: calendar)
     #expect(day.map { calendar.dateComponents([.year, .month, .day], from: $0) } == DateComponents(year: 2026, month: 9, day: 15))
-    let month = WisprDate.date("2025-10", calendar: calendar)
+    let month = WhisperDate.date("2025-10", calendar: calendar)
     #expect(month.map { calendar.dateComponents([.year, .month, .day], from: $0) } == DateComponents(year: 2025, month: 10, day: 1))
-    #expect(WisprDate.date("", calendar: calendar) == nil)
-    #expect(WisprDate.date("octubre", calendar: calendar) == nil)
+    #expect(WhisperDate.date("", calendar: calendar) == nil)
+    #expect(WhisperDate.date("octubre", calendar: calendar) == nil)
 }
 
 @Test func parsesSSEPickingMatchingID() throws {
@@ -165,12 +165,12 @@ final class FakeMCPServer: URLProtocol, @unchecked Sendable {
 }
 
 @Suite(.serialized) struct HandshakeTests {
-    func makeService() -> WisprService {
+    func makeService() -> WhisperService {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [FakeMCPServer.self]
         let client = MCPClient(endpoint: URL(string: "https://example.invalid/mcp")!, token: "tkn",
                                session: URLSession(configuration: config))
-        return WisprService(client: client)
+        return WhisperService(client: client)
     }
 
     @Test func handshakeThenToolCallWithSession() async throws {

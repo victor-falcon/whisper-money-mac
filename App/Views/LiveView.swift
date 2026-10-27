@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Consulta en vivo a Wispr: carga al aparecer, vuelve a pedir cada `interval` mientras la vista
+/// Consulta en vivo a Whisper Money: carga al aparecer, vuelve a pedir cada `interval` mientras la vista
 /// está visible y con ⌘R. Si una consulta falla, se muestra el error, nunca números anteriores.
 struct LiveView<Value, Content: View>: View {
     var key: AnyHashable = 0
@@ -18,7 +18,7 @@ struct LiveView<Value, Content: View>: View {
         Group {
             if let error {
                 ContentUnavailableView {
-                    Label("Sin conexión con Wispr", systemImage: "wifi.exclamationmark")
+                    Label("Sin conexión con Whisper Money", systemImage: "wifi.exclamationmark")
                 } description: {
                     Text(error)
                 } actions: {
@@ -27,7 +27,7 @@ struct LiveView<Value, Content: View>: View {
             } else if let value {
                 content(value)
             } else {
-                ProgressView("Consultando Wispr…")
+                ProgressView("Consultando Whisper Money…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
@@ -42,7 +42,7 @@ struct LiveView<Value, Content: View>: View {
                         Label("Actualizar", systemImage: "arrow.clockwise")
                     }
                 }
-                .help("Consultar a Wispr de nuevo (⌘R)")
+                .help("Consultar a Whisper Money de nuevo (⌘R)")
                 .keyboardShortcut("r", modifiers: .command)
             }
         }

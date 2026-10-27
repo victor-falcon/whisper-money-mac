@@ -1,10 +1,10 @@
 import Charts
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 struct CashflowView: View {
-    let service: WisprService
-    @State private var month = WisprDate.startOfMonth(.now)
+    let service: WhisperService
+    @State private var month = WhisperDate.startOfMonth(.now)
 
     struct Snapshot {
         let month: CashflowResponse
@@ -21,10 +21,10 @@ struct CashflowView: View {
     }
 
     private func load(_ month: Date) async throws -> Snapshot {
-        let end = WisprDate.endOfMonth(month)
+        let end = WhisperDate.endOfMonth(month)
         let sixBack = Calendar.current.date(byAdding: .month, value: -5, to: month) ?? month
-        async let current = service.cashflow(from: WisprDate.string(month), to: WisprDate.string(end))
-        async let history = service.cashflow(from: WisprDate.string(sixBack), to: WisprDate.string(end))
+        async let current = service.cashflow(from: WhisperDate.string(month), to: WhisperDate.string(end))
+        async let history = service.cashflow(from: WhisperDate.string(sixBack), to: WhisperDate.string(end))
         async let base = service.budgets()
         return try await Snapshot(month: current, trend: history.trend.data, currency: base.currency)
     }
@@ -33,7 +33,7 @@ struct CashflowView: View {
 struct CashflowContent: View {
     let snapshot: CashflowView.Snapshot
     let month: Date
-    let service: WisprService
+    let service: WhisperService
 
     private var currency: String { snapshot.currency }
 
@@ -146,7 +146,7 @@ struct CashflowContent: View {
 
     /// "2026-04" → "abr".
     private func monthLabel(_ raw: String) -> String {
-        WisprDate.date(raw).map { $0.formatted(.dateTime.month(.abbreviated)) } ?? raw
+        WhisperDate.date(raw).map { $0.formatted(.dateTime.month(.abbreviated)) } ?? raw
     }
 }
 
@@ -178,16 +178,16 @@ private struct StatCard: View {
 }
 
 private struct SubcategoryView: View {
-    let service: WisprService
-    let parent: WisprKit.Category
+    let service: WhisperService
+    let parent: WhisperKit.Category
     let parentID: String
     let month: Date
     let currency: String
 
     var body: some View {
         LiveView(load: {
-            try await service.spending(from: WisprDate.string(month),
-                                       to: WisprDate.string(WisprDate.endOfMonth(month)),
+            try await service.spending(from: WhisperDate.string(month),
+                                       to: WhisperDate.string(WhisperDate.endOfMonth(month)),
                                        parentCategoryID: parentID)
         }) { response in
             List(response.categories.sorted { $0.amount > $1.amount }) { item in
@@ -203,7 +203,7 @@ private struct SubcategoryView: View {
 }
 
 extension Color {
-    /// Colores con nombre de Tailwind que usa Wispr para sus categorías.
+    /// Colores con nombre de Tailwind que usa Whisper Money para sus categorías.
     static func named(_ name: String?) -> Color {
         switch name {
         case "red", "rose": .red
@@ -224,8 +224,8 @@ extension Color {
 #Preview("Flujo") {
     NavigationStack {
         CashflowContent(snapshot: .init(month: PreviewData.cashflow, trend: PreviewData.cashflow.trend.data, currency: "MXN"),
-                        month: WisprDate.date("2026-09-01")!,
-                        service: WisprService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!, token: "preview")))
+                        month: WhisperDate.date("2026-09-01")!,
+                        service: WhisperService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!, token: "preview")))
             .navigationTitle("Flujo")
     }
     .frame(width: 1080, height: 720)
@@ -234,8 +234,8 @@ extension Color {
 #Preview("Flujo, ancho mínimo") {
     NavigationStack {
         CashflowContent(snapshot: .init(month: PreviewData.cashflow, trend: PreviewData.cashflow.trend.data, currency: "MXN"),
-                        month: WisprDate.date("2026-09-01")!,
-                        service: WisprService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!, token: "preview")))
+                        month: WhisperDate.date("2026-09-01")!,
+                        service: WhisperService(credentials: Credentials(endpoint: URL(string: "https://example.invalid/mcp")!, token: "preview")))
     }
     .frame(width: 630, height: 720)
 }

@@ -5,7 +5,7 @@
 ## Cómo lo probé
 
 - [ ] `./scripts/test.sh` pasa
-- [ ] Compila con `xcodebuild -scheme WisprMac`
+- [ ] Compila con `xcodebuild -scheme WhisperMac`
 - [ ] Cambios de UI: capturas de antes y después con datos sintéticos
 
 ## Checklist

@@ -1,9 +1,9 @@
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 /// `list_accounts` no trae saldos: el saldo de cada cuenta es el último punto de `get_net_worth`.
 struct AccountsView: View {
-    let service: WisprService
+    let service: WhisperService
 
     struct Snapshot {
         let accounts: [Account]
@@ -20,7 +20,7 @@ struct AccountsView: View {
         let today = Date.now
         let from = Calendar.current.date(byAdding: .month, value: -12, to: today) ?? today
         async let accounts = service.accounts()
-        async let worth = service.netWorth(from: WisprDate.string(from), to: WisprDate.string(today))
+        async let worth = service.netWorth(from: WhisperDate.string(from), to: WhisperDate.string(today))
         return try await Snapshot(accounts: accounts.accounts, balances: worth.latestBalances)
     }
 }

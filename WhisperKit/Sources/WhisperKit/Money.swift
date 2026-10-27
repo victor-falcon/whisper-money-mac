@@ -1,7 +1,7 @@
 import Foundation
 
 /// Montos en unidades menores → texto. Cuántas unidades menores tiene la unidad mayor depende de la
-/// moneda (no siempre 100), según las instrucciones del MCP de Wispr Money.
+/// moneda (no siempre 100), según las instrucciones del MCP de Whisper Money.
 public enum Money {
     static let exponents: [String: Int] = [
         "COP": 0, "CLP": 0, "PYG": 0, "JPY": 0, "PKR": 0,

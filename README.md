@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/banner.png" alt="Wispr Money para Mac: tus finanzas en vivo, nativas en macOS Tahoe" width="100%">
+<img src="docs/banner.png" alt="Whisper Money para Mac: tus finanzas en vivo, nativas en macOS Tahoe" width="100%">
 
-# Wispr Money para Mac
+# Whisper Money para Mac
 
-**App nativa de macOS y widget de escritorio para [Wispr Money](#qué-es-wispr-money) self-hosted.**
+**App nativa de macOS y widget de escritorio para [Whisper Money](#qué-es-whisper-money) self-hosted.**
 SwiftUI puro, sin web views, sin caché: cada cifra se pide en vivo a tu servidor.
 
 [![macOS 26+](https://img.shields.io/badge/macOS-26%2B%20Tahoe-000000?logo=apple&logoColor=white)](#requisitos)
@@ -18,18 +18,18 @@ SwiftUI puro, sin web views, sin caché: cada cifra se pide en vivo a tu servido
 </div>
 
 > [!NOTE]
-> **In English:** a native macOS 26 (Tahoe) client and desktop widget for self-hosted Wispr Money.
+> **In English:** a native macOS 26 (Tahoe) client and desktop widget for self-hosted Whisper Money.
 > Pure SwiftUI + Swift Charts + WidgetKit, talking straight to the server's MCP endpoint
 > (Streamable HTTP + JSON-RPC). No web views, no cache: every number is fetched live, and if a
 > request fails you see the error, never stale figures. The UI is in Spanish; contributions in
 > English are welcome.
 
 > [!IMPORTANT]
-> Cliente **no oficial**, hecho por la comunidad. No está afiliado ni respaldado por Wispr Money.
+> Cliente **no oficial**, hecho por la comunidad. No está afiliado ni respaldado por Whisper Money.
 
 ## Por qué
 
-Wispr Money vive en el navegador. Esta app lo trae al escritorio como una app de Mac de verdad:
+Whisper Money vive en el navegador. Esta app lo trae al escritorio como una app de Mac de verdad:
 barra lateral translúcida, atajos de teclado, gráficas nativas y un widget que ves sin abrir nada.
 Todo se consulta en vivo por MCP, el mismo endpoint que usan los asistentes de IA, así que no hay
 backend extra ni base de datos local.
@@ -86,7 +86,7 @@ blanco, así que el exceso también se lee por la forma y la opacidad del anillo
 - Lo único que se guarda en la Mac es el endpoint y el token, en el Llavero.
 
 **Límite del widget (lo impone macOS):** un widget no puede tener una conexión viva. El sistema le
-pide una "foto" y la muestra hasta la siguiente. Aquí cada foto se pide en vivo a Wispr
+pide una "foto" y la muestra hasta la siguiente. Aquí cada foto se pide en vivo a Whisper Money
 (`list_budgets`); se renueva cada ~15 min (según el presupuesto de refrescos de macOS) y cada vez
 que abres la app. Muestra la hora de consulta y, si no hay red, "Sin conexión" en vez de cifras viejas.
 
@@ -102,7 +102,7 @@ con selección por cursor. Cada pantalla se separa en carga en vivo (`XView`) y 
 - macOS 26 Tahoe o posterior.
 - Xcode 26 completo (el widget es una extensión que solo Xcode empaqueta y firma) y
   [XcodeGen](https://github.com/yonaskolb/XcodeGen).
-- Un servidor Wispr Money self-hosted con el endpoint MCP (`https://<tu-host>/mcp`) y un token.
+- Un servidor Whisper Money self-hosted con el endpoint MCP (`https://<tu-host>/mcp`) y un token.
 
 ## Compilar e instalar
 
@@ -110,14 +110,14 @@ con selección por cursor. Cada pantalla se separa en carga en vivo (`XView`) y 
 2. Xcode → Settings → Accounts: agrega tu Apple ID (el equipo personal gratuito basta).
 3. Crea `Config/Team.local.xcconfig` con tu Team ID (está en `.gitignore`):
    ```
-   WISPR_TEAM_ID = ABCDE12345
+   WHISPER_TEAM_ID = ABCDE12345
    ```
    El Team ID aparece en Xcode → Settings → Accounts → tu equipo. App y widget lo necesitan para
    compartir el token por un grupo de Llavero.
 4. Genera el proyecto y compila:
    ```sh
    brew install xcodegen
-   xcodegen generate && open WisprMac.xcodeproj   # ▶︎ con el esquema WisprMac
+   xcodegen generate && open WhisperMac.xcodeproj   # ▶︎ con el esquema WhisperMac
    ```
 5. Para que macOS registre el widget, instala la app en `/Applications`.
 6. En la app, pega el endpoint y el token. La conexión se prueba antes de guardar nada.
@@ -133,10 +133,10 @@ flowchart LR
     App["App SwiftUI<br/>(App/)"]
     Widget["Widget<br/>(Widget/)"]
     Shared["Vistas compartidas<br/>(Shared/)"]
-    Kit["WisprKit<br/>cliente MCP · modelos · Money"]
+    Kit["WhisperKit<br/>cliente MCP · modelos · Money"]
     Keychain[("Llavero<br/>endpoint + token")]
   end
-  Server["Wispr Money<br/>/mcp"]
+  Server["Whisper Money<br/>/mcp"]
 
   App --> Shared
   Widget --> Shared
@@ -147,7 +147,7 @@ flowchart LR
 ```
 
 ```
-WisprKit/   paquete SPM: cliente MCP, modelos, dinero, Llavero (+ tests, + wispr-probe)
+WhisperKit/   paquete SPM: cliente MCP, modelos, dinero, Llavero (+ tests, + whisper-probe)
 App/        app SwiftUI
 Widget/     extensión WidgetKit
 Shared/     vistas y datos de preview compartidos por la app y el widget
@@ -156,7 +156,7 @@ project.yml definición del proyecto para XcodeGen (el .xcodeproj no se versiona
 ```
 
 Los montos viajan en unidades menores (`Money`) y la moneda sale de cada respuesta, nunca se
-hardcodea. `wispr-probe` verifica la conexión desde la terminal sin Xcode.
+hardcodea. `whisper-probe` verifica la conexión desde la terminal sin Xcode.
 
 ## Tests
 
@@ -174,7 +174,7 @@ el servidor real ni contienen datos financieros reales.
 - No se guardan montos en disco (ni `UserDefaults`, ni app group, ni archivos).
 - El token vive en el Llavero de macOS y nunca se imprime.
 
-## Qué es Wispr Money
+## Qué es Whisper Money
 
 Una app de finanzas personales que puedes alojar en tu propio servidor y que expone sus datos por
 MCP (Model Context Protocol). Este repo es solo un cliente para Mac; necesitas tu propia
@@ -187,7 +187,7 @@ Issues y PRs son bienvenidos: revisa los [issues abiertos](../../issues), sobre 
 Antes de abrir un PR lee [CONTRIBUTING.md](CONTRIBUTING.md). La regla más importante: **nunca
 subas datos financieros reales**, ni en capturas, ni en tests, ni en fixtures.
 
-Si te sirve, deja una ⭐: ayuda a que otros usuarios de Wispr Money encuentren la app.
+Si te sirve, deja una ⭐: ayuda a que otros usuarios de Whisper Money encuentren la app.
 
 ## Licencia
 

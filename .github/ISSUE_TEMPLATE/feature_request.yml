@@ -19,4 +19,4 @@ body:
     id: mcp
     attributes:
       label: Herramientas MCP involucradas
-      description: Si la sabes, qué herramienta de Wispr (`list_budgets`, `get_cashflow`…) da los datos.
+      description: Si la sabes, qué herramienta de Whisper Money (`list_budgets`, `get_cashflow`…) da los datos.

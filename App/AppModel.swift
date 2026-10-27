@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import SwiftUI
 import WidgetKit
-import WisprKit
+import WhisperKit
 
 enum AppSection: String, CaseIterable, Identifiable {
     case presupuestos, cuentas, movimientos, flujo, patrimonio
@@ -44,7 +44,7 @@ enum AppSection: String, CaseIterable, Identifiable {
 @Observable
 final class AppModel {
     var section: AppSection = .presupuestos
-    private(set) var service: WisprService?
+    private(set) var service: WhisperService?
     private(set) var endpoint: URL?
     var keychainError: String?
 
@@ -61,7 +61,7 @@ final class AppModel {
     /// Prueba la conexión con una consulta real antes de guardar nada en el Llavero.
     func connect(endpoint: URL, token: String) async throws {
         let credentials = Credentials(endpoint: endpoint, token: token)
-        let candidate = WisprService(credentials: credentials)
+        let candidate = WhisperService(credentials: credentials)
         _ = try await candidate.budgets()
         try store.save(credentials)
         use(credentials)
@@ -76,12 +76,12 @@ final class AppModel {
     }
 
     func open(_ url: URL) {
-        guard url.scheme == "wisprmac", let host = url.host(), let target = AppSection(rawValue: host) else { return }
+        guard url.scheme == "whispermac", let host = url.host(), let target = AppSection(rawValue: host) else { return }
         section = target
     }
 
     private func use(_ credentials: Credentials) {
-        service = WisprService(credentials: credentials)
+        service = WhisperService(credentials: credentials)
         endpoint = credentials.endpoint
     }
 }

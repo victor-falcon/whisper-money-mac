@@ -1,7 +1,7 @@
 # Proyecto de Xcode generado con xcodegen:  xcodegen generate
 # Tu Team ID va en Config/Team.local.xcconfig (fuera de git), ver README.
 # El .xcodeproj no se versiona; se regenera desde este archivo.
-name: WisprMac
+name: WhisperMac
 options:
   bundleIdPrefix: mx.diego
   deploymentTarget:
@@ -18,55 +18,55 @@ settings:
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
     CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: $(WISPR_TEAM_ID)
+    DEVELOPMENT_TEAM: $(WHISPER_TEAM_ID)
     ENABLE_HARDENED_RUNTIME: YES
 
 packages:
-  WisprKit:
-    path: WisprKit
+  WhisperKit:
+    path: WhisperKit
 
 targets:
-  WisprMac:
+  WhisperMac:
     type: application
     platform: macOS
     sources: [App, Shared]
     dependencies:
-      - package: WisprKit
+      - package: WhisperKit
       - target: BudgetsWidget
     info:
       path: App/Info.plist
       properties:
-        CFBundleDisplayName: Wispr Money
+        CFBundleDisplayName: Whisper Money
         LSApplicationCategoryType: public.app-category.finance
-        KeychainAccessGroup: $(AppIdentifierPrefix)mx.diego.wisprmac.shared
+        KeychainAccessGroup: $(AppIdentifierPrefix)mx.diego.whispermac.shared
         CFBundleURLTypes:
-          - CFBundleURLName: mx.diego.wisprmac
-            CFBundleURLSchemes: [wisprmac]
+          - CFBundleURLName: mx.diego.whispermac
+            CFBundleURLSchemes: [whispermac]
     entitlements:
-      path: App/WisprMac.entitlements
+      path: App/WhisperMac.entitlements
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
         keychain-access-groups:
-          - $(AppIdentifierPrefix)mx.diego.wisprmac.shared
+          - $(AppIdentifierPrefix)mx.diego.whispermac.shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: mx.diego.wisprmac
-        PRODUCT_NAME: WisprMoney
+        PRODUCT_BUNDLE_IDENTIFIER: mx.diego.whispermac
+        PRODUCT_NAME: WhisperMoney
 
   BudgetsWidget:
     type: app-extension
     platform: macOS
     sources: [Widget, Shared]
     dependencies:
-      - package: WisprKit
+      - package: WhisperKit
       - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework
     info:
       path: Widget/Info.plist
       properties:
         CFBundleDisplayName: Presupuestos
-        KeychainAccessGroup: $(AppIdentifierPrefix)mx.diego.wisprmac.shared
+        KeychainAccessGroup: $(AppIdentifierPrefix)mx.diego.whispermac.shared
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -75,8 +75,8 @@ targets:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
         keychain-access-groups:
-          - $(AppIdentifierPrefix)mx.diego.wisprmac.shared
+          - $(AppIdentifierPrefix)mx.diego.whispermac.shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: mx.diego.wisprmac.budgets
+        PRODUCT_BUNDLE_IDENTIFIER: mx.diego.whispermac.budgets
         PRODUCT_NAME: BudgetsWidget

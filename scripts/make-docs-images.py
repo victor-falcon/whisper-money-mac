@@ -100,7 +100,7 @@ def banner(w, h, screenshot, widget, compact=False):
     im.alpha_composite(ring, (x, int(h * 0.14)))
     title = font(SF, int(h * 0.105), "Bold")
     ty = int(h * 0.36)
-    d.text((x, ty), "Wispr Money", font=title, fill=(255, 255, 255))
+    d.text((x, ty), "Whisper Money", font=title, fill=(255, 255, 255))
     d.text((x, ty + int(h * 0.115)), "para Mac", font=title, fill=(255, 255, 255, 150))
     sub = font(SF, int(h * 0.036), "Regular")
     sy = ty + int(h * 0.27)

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum WisprError: Error, LocalizedError, Equatable {
+public enum WhisperError: Error, LocalizedError, Equatable {
     case http(Int)
     case unauthorized
     case rpc(code: Int, message: String)
@@ -10,15 +10,15 @@ public enum WisprError: Error, LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case .http(let code): return "El servidor respondió HTTP \(code)."
-        case .unauthorized: return "Token rechazado por Wispr Money."
+        case .unauthorized: return "Token rechazado por Whisper Money."
         case .rpc(_, let message): return "Error del servidor MCP: \(message)"
-        case .tool(let message): return "Wispr Money devolvió un error: \(message)"
+        case .tool(let message): return "Whisper Money devolvió un error: \(message)"
         case .badResponse(let detail): return "Respuesta inesperada: \(detail)"
         }
     }
 }
 
-/// Cliente MCP (transporte Streamable HTTP, JSON-RPC 2.0) contra el endpoint `/mcp` de Wispr Money.
+/// Cliente MCP (transporte Streamable HTTP, JSON-RPC 2.0) contra el endpoint `/mcp` de Whisper Money.
 ///
 /// Sin caché de ningún tipo: sesión efímera, sin `URLCache` y cada request ignora caché local y remota.
 /// Cada llamada a una herramienta es una consulta en vivo al servidor.
@@ -50,7 +50,7 @@ public actor MCPClient {
     public func callTool(_ name: String, arguments: [String: JSONValue] = [:]) async throws -> Data {
         do {
             return try await callToolOnce(name, arguments: arguments)
-        } catch WisprError.http(404) where sessionID != nil {
+        } catch WhisperError.http(404) where sessionID != nil {
             // La sesión MCP expiró en el servidor: se renegocia una vez.
             resetSession()
             return try await callToolOnce(name, arguments: arguments)
@@ -63,8 +63,8 @@ public actor MCPClient {
                                        params: .object(["name": .string(name), "arguments": .object(arguments)]))
         let tool = try JSONDecoder().decode(ToolResult.self, from: JSONEncoder().encode(result))
         let text = tool.content.first(where: { $0.type == "text" })?.text ?? ""
-        if tool.isError == true { throw WisprError.tool(text) }
-        guard let data = text.data(using: .utf8) else { throw WisprError.badResponse("contenido no UTF-8") }
+        if tool.isError == true { throw WhisperError.tool(text) }
+        guard let data = text.data(using: .utf8) else { throw WhisperError.badResponse("contenido no UTF-8") }
         return data
     }
 
@@ -78,7 +78,7 @@ public actor MCPClient {
         _ = try await request(method: "initialize", params: .object([
             "protocolVersion": .string(Self.protocolVersion),
             "capabilities": .object([:]),
-            "clientInfo": .object(["name": .string("WisprMac"), "version": .string("0.1.0")]),
+            "clientInfo": .object(["name": .string("WhisperMac"), "version": .string("0.1.0")]),
         ]))
         try await notify(method: "notifications/initialized")
         initialized = true
@@ -118,18 +118,18 @@ public actor MCPClient {
         } else {
             reply = try JSONDecoder().decode(RPCResponse.self, from: data)
         }
-        if let error = reply.error { throw WisprError.rpc(code: error.code, message: error.message) }
-        guard let result = reply.result else { throw WisprError.badResponse("sin result en \(method)") }
+        if let error = reply.error { throw WhisperError.rpc(code: error.code, message: error.message) }
+        guard let result = reply.result else { throw WhisperError.badResponse("sin result en \(method)") }
         return result
     }
 
     @discardableResult
     private func check(_ response: URLResponse) throws -> HTTPURLResponse {
-        guard let http = response as? HTTPURLResponse else { throw WisprError.badResponse("no es HTTP") }
+        guard let http = response as? HTTPURLResponse else { throw WhisperError.badResponse("no es HTTP") }
         switch http.statusCode {
         case 200..<300: return http
-        case 401, 403: throw WisprError.unauthorized
-        default: throw WisprError.http(http.statusCode)
+        case 401, 403: throw WhisperError.unauthorized
+        default: throw WhisperError.http(http.statusCode)
         }
     }
 
@@ -148,7 +148,7 @@ public actor MCPClient {
             else { continue }
             return message
         }
-        throw WisprError.badResponse("el stream SSE no trajo la respuesta \(id)")
+        throw WhisperError.badResponse("el stream SSE no trajo la respuesta \(id)")
     }
 }
 

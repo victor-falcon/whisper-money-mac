@@ -1,6 +1,6 @@
 import SwiftUI
 import WidgetKit
-import WisprKit
+import WhisperKit
 
 /// Una "foto" del widget: lo que devolvió la consulta en vivo a `list_budgets`, o por qué falló.
 struct BudgetsEntry: TimelineEntry {
@@ -28,7 +28,7 @@ struct BudgetsWidgetView: View {
     var body: some View {
         content
             .containerBackground(for: .widget) { background }
-            .widgetURL(URL(string: "wisprmac://presupuestos"))
+            .widgetURL(URL(string: "whispermac://presupuestos"))
     }
 
     @ViewBuilder
@@ -40,7 +40,7 @@ struct BudgetsWidgetView: View {
         case .live(let response):
             live(response)
         case .notConfigured:
-            message("Abre Wispr Money para conectar tu servidor.", symbol: "key")
+            message("Abre Whisper Money para conectar tu servidor.", symbol: "key")
         case .failed(let reason):
             message(reason, symbol: "wifi.exclamationmark", title: "Sin conexión")
         }
@@ -202,6 +202,6 @@ struct BudgetsWidgetView: View {
           "current_period":{"start_date":"","end_date":"","allocated_amount":100,"carried_over_amount":0,
            "spent_amount":30,"remaining_amount":70,"processing_historical":false}}]}
         """
-        return try! WisprDecoder.decode(BudgetsResponse.self, from: Data(json.utf8))
+        return try! WhisperDecoder.decode(BudgetsResponse.self, from: Data(json.utf8))
     }()
 }

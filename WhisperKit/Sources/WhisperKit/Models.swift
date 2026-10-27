@@ -1,6 +1,6 @@
 import Foundation
 
-// Modelos de las respuestas del MCP de Wispr Money. Los montos son enteros en unidades menores
+// Modelos de las respuestas del MCP de Whisper Money. Los montos son enteros en unidades menores
 // de su moneda (ver `Money`). Se decodifican con `keyDecodingStrategy = .convertFromSnakeCase`.
 
 // MARK: Presupuestos (list_budgets)

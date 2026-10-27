@@ -1,9 +1,9 @@
 import Charts
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 struct NetWorthView: View {
-    let service: WisprService
+    let service: WhisperService
 
     struct Snapshot {
         let worth: NetWorthResponse
@@ -18,15 +18,15 @@ struct NetWorthView: View {
 
     private func load() async throws -> Snapshot {
         let today = Date.now
-        let from = WisprDate.startOfMonth(Calendar.current.date(byAdding: .month, value: -11, to: today) ?? today)
-        async let worth = service.netWorth(from: WisprDate.string(from), to: WisprDate.string(today))
+        let from = WhisperDate.startOfMonth(Calendar.current.date(byAdding: .month, value: -11, to: today) ?? today)
+        async let worth = service.netWorth(from: WhisperDate.string(from), to: WhisperDate.string(today))
         async let accounts = service.accounts()
         return try await Snapshot(worth: worth, accounts: accounts.accounts)
     }
 }
 
 /// Saldos por cuenta listos para un área apilada: activos hacia arriba, deudas hacia abajo.
-/// Préstamos y tarjetas cuentan siempre como deuda (Wispr manda los préstamos en positivo y las
+/// Préstamos y tarjetas cuentan siempre como deuda (Whisper Money manda los préstamos en positivo y las
 /// tarjetas en negativo). Cada cuenta aporta dos series, su parte positiva y su parte negativa, para
 /// que si un activo cambia de signo entre meses la transición pase por cero sin cruzar otras capas.
 struct NetWorthBreakdown {
@@ -76,7 +76,7 @@ struct NetWorthBreakdown {
         currency = worth.current.currencyCode
         let byID = Dictionary(accounts.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let points = worth.evolution.data
-            .compactMap { point in WisprDate.date(point.label).map { (date: $0, balances: point.balances) } }
+            .compactMap { point in WhisperDate.date(point.label).map { (date: $0, balances: point.balances) } }
             .sorted { $0.date < $1.date }
 
         func signed(_ id: String, _ value: Int) -> Int {
@@ -180,7 +180,7 @@ struct NetWorthContent: View {
                 }
             }
             if let last, last.net != c.current {
-                Text("La suma de tus cuentas da \(Money.format(last.net, currency: b.currency)): Wispr calcula este total con otro criterio.")
+                Text("La suma de tus cuentas da \(Money.format(last.net, currency: b.currency)): Whisper Money calcula este total con otro criterio.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

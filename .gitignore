@@ -6,7 +6,8 @@ xcuserdata/
 .swiftpm/
 # Generados por xcodegen desde project.yml
 App/Info.plist
-App/WisprMac.entitlements
+App/WhisperMac.entitlements
 Widget/Info.plist
 Widget/BudgetsWidget.entitlements
 Config/Team.local.xcconfig
+__pycache__/

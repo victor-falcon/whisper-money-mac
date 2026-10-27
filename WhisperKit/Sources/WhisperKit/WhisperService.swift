@@ -1,7 +1,7 @@
 import Foundation
 
-/// Operaciones de Wispr Money. Cada método es una llamada en vivo al servidor; nada se guarda.
-public struct WisprService: Sendable {
+/// Operaciones de Whisper Money. Cada método es una llamada en vivo al servidor; nada se guarda.
+public struct WhisperService: Sendable {
     private let client: MCPClient
 
     public init(client: MCPClient) {
@@ -28,7 +28,7 @@ public struct WisprService: Sendable {
         try await call("search_transactions", filter.arguments)
     }
 
-    /// Crea un movimiento manual. Wispr no deduplica: solo para lo que el banco no va a sincronizar.
+    /// Crea un movimiento manual. Whisper Money no deduplica: solo para lo que el banco no va a sincronizar.
     public func createTransaction(_ new: NewTransaction) async throws {
         _ = try await client.callTool("create_transaction", arguments: new.arguments)
     }
@@ -50,11 +50,11 @@ public struct WisprService: Sendable {
 
     private func call<T: Decodable>(_ tool: String, _ arguments: [String: JSONValue] = [:]) async throws -> T {
         let data = try await client.callTool(tool, arguments: arguments)
-        return try WisprDecoder.decode(T.self, from: data)
+        return try WhisperDecoder.decode(T.self, from: data)
     }
 }
 
-public enum WisprDecoder {
+public enum WhisperDecoder {
     public static func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -63,7 +63,7 @@ public enum WisprDecoder {
 }
 
 /// Fechas `YYYY-MM-DD` en el calendario local, como las espera el MCP.
-public enum WisprDate {
+public enum WhisperDate {
     public static func string(_ date: Date, calendar: Calendar = .current) -> String {
         let c = calendar.dateComponents([.year, .month, .day], from: date)
         return String(format: "%04d-%02d-%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0)

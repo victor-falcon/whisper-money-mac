@@ -1,5 +1,5 @@
 import SwiftUI
-import WisprKit
+import WhisperKit
 
 struct RootView: View {
     @Environment(AppModel.self) private var model

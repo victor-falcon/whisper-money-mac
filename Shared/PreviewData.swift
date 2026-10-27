@@ -1,8 +1,8 @@
 #if DEBUG
 import Foundation
-import WisprKit
+import WhisperKit
 
-/// Datos sintéticos solo para `#Preview`. Cifras inventadas; nunca datos reales de Wispr.
+/// Datos sintéticos solo para `#Preview`. Cifras inventadas; nunca datos reales de Whisper Money.
 enum PreviewData {
     static let budgets: BudgetsResponse = decode("""
     {"currency":"MXN","budgets":[
@@ -27,10 +27,10 @@ enum PreviewData {
     /// 12 meses: activos que crecen, tarjetas en negativo y un préstamo que baja.
     static let netWorth: NetWorthResponse = {
         let calendar = Calendar.current
-        let start = calendar.date(byAdding: .month, value: -11, to: WisprDate.startOfMonth(.now))!
+        let start = calendar.date(byAdding: .month, value: -11, to: WhisperDate.startOfMonth(.now))!
         let points: [[String: Any]] = (0..<12).map { i in
             let date = calendar.date(byAdding: .month, value: i, to: start)!
-            let label = String(WisprDate.string(date).prefix(7))
+            let label = String(WhisperDate.string(date).prefix(7))
             let wave = Int(sin(Double(i) / 1.7) * 400_000)
             return [
                 "month": label,
@@ -47,7 +47,7 @@ enum PreviewData {
             "current": ["current": 4_024_523, "previous": 3_400_000, "currency_code": "MXN"],
             "evolution": ["data": points],
         ]
-        return try! WisprDecoder.decode(NetWorthResponse.self, from: JSONSerialization.data(withJSONObject: json))
+        return try! WhisperDecoder.decode(NetWorthResponse.self, from: JSONSerialization.data(withJSONObject: json))
     }()
 
     static let cashflow: CashflowResponse = decode("""
@@ -86,7 +86,7 @@ enum PreviewData {
     }
 
     private static func decode<T: Decodable>(_ json: String) -> T {
-        try! WisprDecoder.decode(T.self, from: Data(json.utf8))
+        try! WhisperDecoder.decode(T.self, from: Data(json.utf8))
     }
 }
 #endif
